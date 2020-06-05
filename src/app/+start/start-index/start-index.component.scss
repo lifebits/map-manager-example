@@ -1,0 +1,31 @@
+.page-start {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.middle-block {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  button {
+    width: 200px;
+    height: 64px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+
+    &.left {
+      background: #007AFF;
+      border-radius: 40px 2px 2px 40px;
+      color: white;
+    }
+    &.right {
+      border-radius: 2px 40px 40px 2px;
+      border: 1px solid #007AFF;
+      color: #007AFF;
+    }
+  }
+}
