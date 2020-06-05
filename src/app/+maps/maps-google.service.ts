@@ -4,7 +4,7 @@ import { GoogleAPI, MapOptionsConfig, MapPoint } from './maps.interface';
 // import * as MarkerCluster from 'node-js-marker-clusterer';
 
 const API_INIT = 'onMapApiLoaded';
-const API_KEY = 'AIzaSyCdKIszk9WB49jG_bg0jh14xLEABloECXA';
+const API_KEY = 'AIzaSyAcuLH_XAAW8Ggg-9YN_Y_8QYcYp0Qa5fU';
 const API_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&language=ru&callback=${API_INIT}`;
 
 @Injectable({
