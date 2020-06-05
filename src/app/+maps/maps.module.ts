@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoogleMapsComponent } from './google-maps/google-maps.component';
 
 import { MapsRoutingModule } from './maps-routing.module';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
-  declarations: [GoogleMapsComponent],
+  declarations: [MapComponent],
   imports: [
     CommonModule,
     MapsRoutingModule

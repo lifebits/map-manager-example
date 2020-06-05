@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { GoogleMapsComponent } from './google-maps/google-maps.component';
+import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: GoogleMapsComponent
+    component: MapComponent
   }
 ];
 
