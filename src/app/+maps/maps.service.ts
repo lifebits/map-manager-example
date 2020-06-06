@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { first } from 'rxjs/operators';
 
 import { MapsGoogleService } from './maps-google.service';
 import { MapsYandexService } from './maps-yandex.service';
-import { MapOptionsConfig } from "./maps.interface";
+
+// import { MapOptionsConfig } from "./maps.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,6 @@ export class MapsService {
   constructor(
     private mapsGoogleService: MapsGoogleService,
     private mapsYandexService: MapsYandexService) {
-    // super();
   }
 
   initGoogleMap(): Promise<any> {
@@ -39,8 +40,9 @@ export class MapsService {
   }
 
   initMapYandex() {
-    return this.mapsYandexService.initScript();
-    // Window.ymaps.ready(() => console.log(222));
+    return this.mapsYandexService.initScript().pipe(
+      first()
+    );
   }
 
 }
