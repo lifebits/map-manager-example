@@ -1,0 +1,12 @@
+mat-button-toggle {
+  flex-grow: 1;
+
+  ::ng-deep .mat-button-toggle-label-content {
+    line-height: 40px;
+  }
+}
+
+.mat-button-toggle-checked {
+  background-color: #37474F;
+  color: white;
+}
