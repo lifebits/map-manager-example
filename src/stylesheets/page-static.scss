@@ -1,0 +1,11 @@
+.page-static {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .middle-block {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
