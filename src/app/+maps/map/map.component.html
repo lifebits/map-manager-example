@@ -1,5 +1,7 @@
 <section style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
   <section id="map" style="height: 100vh;"></section>
-  <app-user-aggregator>
+  <app-user-aggregator
+    *ngIf="aggregatorIsOpen"
+    (close)="onCloseAggregator()">
   </app-user-aggregator>
 </section>

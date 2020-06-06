@@ -8,10 +8,16 @@ import { MapsService } from '../maps.service';
 })
 export class MapComponent implements OnInit {
 
+  aggregatorIsOpen = true;
+
   constructor(private map: MapsService) { }
 
   ngOnInit(): void {
     // this.map.initMap()
+  }
+
+  onCloseAggregator() {
+    this.aggregatorIsOpen = false;
   }
 
 }
