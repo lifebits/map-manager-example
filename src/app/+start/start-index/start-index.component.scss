@@ -9,6 +9,19 @@
   display: flex;
   align-items: center;
 
+  h3 {
+    font-weight: 600;
+    font-size: 24px;
+    margin: 10px;
+  }
+
+  h4 {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    margin: 0;
+  }
+
   button {
     width: 200px;
     height: 64px;

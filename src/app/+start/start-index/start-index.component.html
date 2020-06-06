@@ -1,28 +1,21 @@
 <section class="page-start">
-  <div style="display: flex; padding: 16px 0; box-shadow: 0 1px 4px rgba(17, 17, 26, 0.1);">
-    <div style="display: flex; align-items: center; margin-left: auto; margin-right: auto;">
-      <img height="30px" src="/assets/imgs/logo.png" alt="logo"/>
-      <span>Я Гражданин</span>
-    </div>
-  </div>
+  <app-start-top-side></app-start-top-side>
 
   <div class="middle-block" style="">
     <div style="text-align: center; margin-left: auto; margin-right: auto;">
-      <h3>Ваше местоположение:</h3>
-      <div>(Барнаул) Алтайский край</div>
+      <h4>Ваше местоположение:</h4>
+      <h3>(Барнаул) Алтайский край</h3>
       <div style="margin: 40px 0;">
         <button mat-raised-button class="left">
-          Primary
+          Подтвердить
         </button>
         <button mat-raised-button class="right">
-          Basic
+          Изменить регион
         </button>
       </div>
     </div>
   </div>
 
-  <div style="padding: 22px; font-style: normal; font-weight: normal; font-size: 16px; line-height: 19px; margin-left: auto; margin-right: auto;">
-    Создано командой <b>Story.Team</b>
-  </div>
+  <app-start-bottom-side></app-start-bottom-side>
 </section>
 
