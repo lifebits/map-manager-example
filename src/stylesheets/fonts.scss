@@ -7,6 +7,13 @@
 
 @font-face {
   font-family: 'Gilroy';
+  src: url('assets/fonts/Gilroy-Semibold.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
   src: url('assets/fonts/Gilroy-Bold.otf') format('opentype');
   font-weight: 600;
   font-style: normal;

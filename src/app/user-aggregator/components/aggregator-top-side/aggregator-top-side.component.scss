@@ -1,0 +1,30 @@
+.top-side {
+  padding: 16px 0;
+  box-shadow: 0 1px 4px rgba(17, 17, 26, 0.1);
+  background-color: white;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  color: #222222;
+
+  .inc {
+    display: flex;
+    align-items: center;
+  }
+
+  .text {
+    line-height: 16px;
+    height: 16px;
+  }
+}
+
+.left {
+  font-weight: 500;
+}
+
+.right {
+  font-size: 15px;
+  font-weight: 400;
+}
