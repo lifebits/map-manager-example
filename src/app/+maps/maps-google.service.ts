@@ -14,9 +14,9 @@ export class MapsGoogleService {
 
   googleAPI: GoogleAPI;
 
-  protected defaultMapsOptions: MapOptionsConfig = {
+  defaultMapsOptions: MapOptionsConfig = {
     // 50.7775672,86.6954942
-    center: { lat: 50.7775672, lng: 86.6954942},
+    center: { lat: 50.7775672, lng: 86.6954942 },
     zoom: 8,
     scrollwheel: true
   };
@@ -87,7 +87,7 @@ export class MapsGoogleService {
     });
   }
 
-  protected loadAPI(): Promise<any> {
+  loadAPI(): Promise<any> {
     return new Promise(resolve => {
       window[API_INIT] = () => {
         console.log('google maps API loaded');

@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
 
 import { MapsGoogleService } from './maps-google.service';
+import { MapsYandexService } from './maps-yandex.service';
 import { MapOptionsConfig } from "./maps.interface";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapsService extends MapsGoogleService {
+export class MapsService {
 
   map: any;
 
   mapIsCreated = false;
 
-  constructor() {
-    super();
+  constructor(
+    private mapsGoogleService: MapsGoogleService,
+    private mapsYandexService: MapsYandexService) {
+    // super();
   }
 
-  initMap(): Promise<any> {
+  initGoogleMap(): Promise<any> {
     return Promise.all([
-      this.loadAPI()
+      this.mapsGoogleService.loadAPI()
     ])
       .then(result => {
         const mapsApi = result[0]['maps'];
-        const mapsOptions = Object.assign(this.defaultMapsOptions, {
+        const mapsOptions = Object.assign(this.mapsGoogleService.defaultMapsOptions, {
           mapTypeControlOptions: {
             style: mapsApi.MapTypeControlStyle.DEFAULT,
             position: mapsApi.ControlPosition.TOP_RIGHT
@@ -33,6 +36,11 @@ export class MapsService extends MapsGoogleService {
         console.log('INIT', { result, mapsOptions });
         console.log(document.getElementById('map'));
       })
+  }
+
+  initMapYandex() {
+    return this.mapsYandexService.initScript();
+    // Window.ymaps.ready(() => console.log(222));
   }
 
 }

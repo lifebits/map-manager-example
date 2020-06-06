@@ -19,10 +19,19 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.map.initMap()
+    // this.map.initGoogleMap()
+    this.map.initMapYandex()
+      .subscribe( ymaps => {
+        new ymaps.Map('map', {
+          center: [ 50.7775672, 86.6954942 ],
+          zoom: 8
+        }, {
+          searchControlProvider: 'yandex#search'
+        })
+      });
 
-    this.tasks.getTaskList()
-      .subscribe(val => console.log(val));
+    // this.tasks.getTaskList()
+    //   .subscribe(val => console.log(val));
   }
 
   onCloseAggregator() {
