@@ -7,11 +7,11 @@ import { StartShortInfoComponent } from './start-short-info/start-short-info.com
 const routes: Routes = [
   {
     path: '',
-    component: StartIndexComponent,
+    component: StartShortInfoComponent,
   },
   {
-    path: 'info',
-    component: StartShortInfoComponent
+    path: 'location',
+    component: StartIndexComponent
   }
 ];
 
