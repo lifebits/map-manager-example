@@ -1,7 +1,7 @@
 import { environment } from '../../../environments/environment';
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Task, TaskMarker } from '../../models/base.models';
@@ -21,9 +21,11 @@ export class TaskService {
     return this.http.get<Task[]>(url);
   }
 
-  getTaskMarkerList(): Observable<TaskMarker[]> {
+  getTaskMarkerList(limit: number): Observable<TaskMarker[]> {
     const url = environment.baseApi + '/tasks/simple';
-    return this.http.get<TaskMarker[]>(url);
+    const params = new HttpParams()
+      .set('count', String(limit));
+    return this.http.get<TaskMarker[]>(url, { params });
   }
 
 }

@@ -35,7 +35,7 @@ export class MapComponent implements OnInit {
             });
         })
       ),
-      this.tasks.getTaskMarkerList().pipe(
+      this.tasks.getTaskMarkerList(2000).pipe(
         map(markerList => {
           return {
             type: "FeatureCollection",
@@ -60,7 +60,7 @@ export class MapComponent implements OnInit {
         })
       )
     ])
-      .subscribe(([myMap, taskList]) => {
+      .subscribe(([myMap, taskList]: [ any, YandexObjectManager ]) => {
         const objectManager = new yandexMap.ObjectManager({
           clusterize: true,
           gridSize: 50,
