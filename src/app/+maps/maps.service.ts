@@ -20,7 +20,7 @@ export class MapsService {
     private mapsYandexService: MapsYandexService) {
   }
 
-  initGoogleMap(): Promise<any> {
+  initMapGoogle(): Promise<any> {
     return Promise.all([
       this.mapsGoogleService.loadAPI()
     ])
