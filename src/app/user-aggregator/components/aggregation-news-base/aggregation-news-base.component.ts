@@ -24,11 +24,11 @@ const NEWS_LIST = [
 ];
 
 @Component({
-  selector: 'app-aggregaation-news-base',
-  templateUrl: './aggregaation-news-base.component.html',
-  styleUrls: ['./aggregaation-news-base.component.scss']
+  selector: 'app-aggregation-news-base',
+  templateUrl: './aggregation-news-base.component.html',
+  styleUrls: ['./aggregation-news-base.component.scss']
 })
-export class AggregaationNewsBaseComponent implements OnInit {
+export class AggregationNewsBaseComponent implements OnInit {
 
   newsList: typeof NEWS_LIST = NEWS_LIST;
 
