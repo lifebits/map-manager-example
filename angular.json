@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ltm-customer": {
+    "map-manager-example": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ltm-customer",
+            "outputPath": "dist/map-manager-example",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ltm-customer:build"
+            "browserTarget": "map-manager-example:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ltm-customer:build:production"
+              "browserTarget": "map-manager-example:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ltm-customer:build"
+            "browserTarget": "map-manager-example:build"
           }
         },
         "test": {
@@ -116,22 +116,22 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ltm-customer:serve"
+            "devServerTarget": "map-manager-example:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ltm-customer:serve:production"
+              "devServerTarget": "map-manager-example:serve:production"
             }
           }
         },
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "baseHref": "/ltm-customer/"
+            "baseHref": "/map-manager-example/"
           }
         }
       }
     }
   },
-  "defaultProject": "ltm-customer"
+  "defaultProject": "map-manager-example"
 }
