@@ -1,65 +1,102 @@
-/* Need implement code */
-import { Injectable } from '@angular/core';
-import { GoogleAPI, MapOptionsConfig, MapPoint } from './maps.interface';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
-// import * as MarkerCluster from 'node-js-marker-clusterer';
+import { fromEvent, Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 
-const API_INIT = 'onMapApiLoaded';
+import { MapInitConfiguration, MapMarker } from './maps-manager.service';
+
+const API_LANG = 'ru_RU';
 const API_KEY = 'AIzaSyAcuLH_XAAW8Ggg-9YN_Y_8QYcYp0Qa5fU';
-const API_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&language=ru&callback=${API_INIT}`;
+const API_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&language=${API_LANG}`;
+const MARKER_CLUSTER_URL = 'https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js'
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapsGoogleService {
 
-  googleAPI: GoogleAPI;
+  private mapSDK;
+  private mapClusterSDK;
 
-  defaultMapsOptions: MapOptionsConfig = {
-    // 50.7775672,86.6954942
-    center: { lat: 50.7775672, lng: 86.6954942 },
-    zoom: 8,
-    scrollwheel: true
-  };
-
-  private static loadScript(): void {
-    console.log('Loading Map API..');
-    let node = document.createElement('script');
+  private static renderMapScript(document: Document) {
+    console.log('Render Google Map Script..');
+    const node = document.createElement('script');
     node.async = true;
     node.src = API_URL;
     node.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(node);
+    return document.getElementsByTagName('head')[0].appendChild(node);
   }
 
-  constructor() {}
+  private static getMapScript(window: Window) {
+    return window['google'].maps;
+  }
 
-  public addMarkers(map, pointList: MapPoint[], markerClickEvent?: Function) {
-    let markers: any[] = [];
-    pointList.forEach(place => {
-      let marker = new this.googleAPI.maps.Marker({
-        position: { lat: place.latitude, lng: place.longitude },
-        map: map,
-        title: place.city,
-        icon: `assets/maps/map-marker.png`,
-        // icon: `assets/icon/maps/${this.getMarkerIcon(place.population)}.png`,
-        // animation: this.googleAPI.maps.Animation.DROP,
-        item: {
-          location: place.city.toLowerCase().replace(/\s/g, ''),
-          state: place.state,
-          rank: place.rank
-        }
-      });
+  private static renderMapClusterScript(document: Document) {
+    const node = document.createElement('script');
+    node.async = true;
+    node.src = MARKER_CLUSTER_URL;
+    node.type = 'text/javascript';
+    return document.getElementsByTagName('head')[0].appendChild(node);
+  }
 
-      if (markerClickEvent) {
-        marker.addListener('click', function() {
-          markerClickEvent(this);
-        });
+  private static getMapClusterScript(window: Window) {
+    return window['MarkerClusterer'];
+  }
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document) {
+  }
+
+  initScript() {
+    return fromEvent(MapsGoogleService.renderMapScript(this.document), 'load').pipe(
+      first(),
+      map(() => MapsGoogleService.getMapScript(window)),
+      map(sdk => this.setMapSDK(sdk))
+    )
+  }
+
+  private setMapSDK(sdk): any {
+    this.mapSDK = sdk;
+    return sdk;
+  }
+
+  createMap(sdk, options: MapInitConfiguration): typeof sdk.Map {
+    const mapsOptions = Object.assign(options, {
+      mapTypeControlOptions: {
+        style: sdk.MapTypeControlStyle.DEFAULT,
+        position: sdk.ControlPosition.TOP_RIGHT
       }
-
-      markers.push(marker);
     });
+    return new sdk.Map(document.getElementById('map'), mapsOptions);
+  }
 
-    return markers;
+  initMapClusterScript(): Observable<any> {
+    return fromEvent(MapsGoogleService.renderMapClusterScript(this.document), 'load').pipe(
+      first(),
+      map(() => MapsGoogleService.getMapClusterScript(window)),
+      map(sdk => this.setMapClusterSDK(sdk)),
+    )
+  }
+
+  private setMapClusterSDK(sdk) {
+    this.mapClusterSDK = sdk;
+    return sdk;
+  }
+
+  createCluster(map, pointList: Array<MapMarker>) {
+    return new this.mapClusterSDK(
+      map,
+      pointList.map(point => this.getMapMarker(point)),
+      { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' }
+    );
+  }
+
+  getMapMarker(point: MapMarker) {
+    return new this.mapSDK.Marker({
+      position: { lat: point.x, lng: point.y },
+      label: point.label
+    });
   }
 
   // public setMarkerCluster(map, markers) {
@@ -70,36 +107,24 @@ export class MapsGoogleService {
   //   return new MarkerCluster(map, markers, options);
   // }
 
-  protected clearMarkers(markers: any[]): void {
-    this.setMapOnAll(null, markers);
-  }
 
-  protected showMarkers(map: any, markers: any[]): void {
-    this.setMapOnAll(map, markers);
-  }
-
-  protected clearMarkersAndClusterer(markerClusterer): void {
-    markerClusterer.clearMarkers();
-  }
-
-  private setMapOnAll(map: any, markers: any[]): void {
-    markers.forEach(marker => {
-      marker.setMap(map);
-    });
-  }
-
-  loadAPI(): Promise<any> {
-    return new Promise(resolve => {
-      window[API_INIT] = () => {
-        console.log('google maps API loaded');
-        this.googleAPI = window['google'];
-        resolve(this.googleAPI);
-        delete window[API_INIT];
-      };
-      MapsGoogleService.loadScript();
-    })
-  }
+  // protected clearMarkers(markers: any[]): void {
+  //   this.setMapOnAll(null, markers);
+  // }
+  //
+  // protected showMarkers(map: any, markers: any[]): void {
+  //   this.setMapOnAll(map, markers);
+  // }
+  //
+  // protected clearMarkersAndClusterer(markerClusterer): void {
+  //   markerClusterer.clearMarkers();
+  // }
+  //
+  // private setMapOnAll(map: any, markers: any[]): void {
+  //   markers.forEach(marker => {
+  //     marker.setMap(map);
+  //   });
+  // }
 
 }
-/* Need implement code */
 
