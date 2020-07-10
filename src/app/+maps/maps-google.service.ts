@@ -4,6 +4,7 @@ import { DOCUMENT } from '@angular/common';
 import { fromEvent, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
+import '@types/googlemaps';
 import { MapInitConfiguration, MapMarker } from './maps-manager.service';
 
 const API_LANG = 'ru_RU';
@@ -16,10 +17,10 @@ const MARKER_CLUSTER_URL = 'https://unpkg.com/@google/markerclustererplus@4.0.1/
 })
 export class MapsGoogleService {
 
-  private mapSDK;
+  private mapSDK!: typeof google.maps;
   private mapClusterSDK;
 
-  private static renderMapScript(document: Document) {
+  private static renderMapScript(document: Document): HTMLScriptElement {
     console.log('Render Google Map Script..');
     const node = document.createElement('script');
     node.async = true;
@@ -28,11 +29,11 @@ export class MapsGoogleService {
     return document.getElementsByTagName('head')[0].appendChild(node);
   }
 
-  private static getMapScript(window: Window) {
+  private static getMapScript(window: Window): typeof google.maps {
     return window['google'].maps;
   }
 
-  private static renderMapClusterScript(document: Document) {
+  private static renderMapClusterScript(document: Document): HTMLScriptElement {
     const node = document.createElement('script');
     node.async = true;
     node.src = MARKER_CLUSTER_URL;
@@ -48,7 +49,7 @@ export class MapsGoogleService {
     @Inject(DOCUMENT) private document: Document) {
   }
 
-  initScript() {
+  initScript(): Observable<typeof google.maps> {
     return fromEvent(MapsGoogleService.renderMapScript(this.document), 'load').pipe(
       first(),
       map(() => MapsGoogleService.getMapScript(window)),
@@ -56,12 +57,12 @@ export class MapsGoogleService {
     )
   }
 
-  private setMapSDK(sdk): any {
+  private setMapSDK(sdk: typeof google.maps): typeof google.maps {
     this.mapSDK = sdk;
     return sdk;
   }
 
-  createMap(sdk, options: MapInitConfiguration): typeof sdk.Map {
+  createMap(sdk, options: MapInitConfiguration): typeof google.maps.Map {
     const mapsOptions = Object.assign(options, {
       mapTypeControlOptions: {
         style: sdk.MapTypeControlStyle.DEFAULT,

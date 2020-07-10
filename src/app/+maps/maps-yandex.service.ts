@@ -1,20 +1,16 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-import { from, fromEvent, Observable, of } from 'rxjs';
-import { switchMap, map, tap, first } from 'rxjs/operators'
+import { from, fromEvent, Observable } from 'rxjs';
+import { switchMap, map, first } from 'rxjs/operators'
 
-import {MapInitConfiguration, MapMarker} from './maps-manager.service';
+import { MapInitConfiguration, MapMarker } from './maps-manager.service';
+
+import * as yandexMap from "yandex-maps";
+import { Map } from 'yandex-maps';
 
 const API_KEY = 'acae57c6-add1-41a2-8be7-673465ecfda7';
 const API_URL = `https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=${API_KEY}`;
-
-const DEFAULT_CONFIG: IConfig = {
-  apiKey: API_KEY,
-  lang: 'ru_RU',
-};
-
-declare const ymaps: any;
 
 export interface IConfig {
   apiKey: string;
@@ -22,18 +18,6 @@ export interface IConfig {
   coordorder?: 'latlong' | 'longlat';
   load?: string;
   mode?: 'release' | 'debug';
-}
-
-export interface ILoadEvent {
-  instance?: any;
-  ymaps: any;
-}
-
-export interface IEvent {
-  instance: any;
-  ymaps: any;
-  type: string | undefined;
-  event: any;
 }
 
 interface YandexObjectManager {
@@ -57,14 +41,16 @@ interface YandexObjectManagerMarker {
   };
 }
 
+type YandexMap = typeof yandexMap & {
+  ObjectManager: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class MapsYandexService {
 
-  private yandexSDK;
-
-  // <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=<ваш API-ключ>" type="text/javascript"></script>
+  private yandexSDK!: YandexMap;
 
   private static renderMapScript(document: Document): HTMLScriptElement {
     console.log('Render Yandex Map Script..');
@@ -75,15 +61,15 @@ export class MapsYandexService {
     return document.getElementsByTagName('head')[0].appendChild(node);
   }
 
-  private static getMapScript(window: Window): Observable<unknown> {
-    return from(window['ymaps'].ready());
+  private static getMapScript(window: Window): Observable<YandexMap> {
+    return from(window['ymaps'].ready()) as Observable<YandexMap>;
   }
 
   constructor(
     @Inject(DOCUMENT) private document: Document) {
   }
 
-  initScript(): Observable<any> {
+  initScript(): Observable<YandexMap> {
     return fromEvent(MapsYandexService.renderMapScript(this.document), 'load').pipe(
       first(),
       switchMap(() => MapsYandexService.getMapScript(window)),
@@ -91,12 +77,12 @@ export class MapsYandexService {
     )
   }
 
-  setMapSDK(sdk): any {
+  setMapSDK(sdk: YandexMap): YandexMap {
     this.yandexSDK = sdk;
     return sdk;
   }
 
-  createMap(sdk, options: MapInitConfiguration) {
+  createMap(sdk: YandexMap, options: MapInitConfiguration): Map {
     return new sdk.Map(
       'map',
       {
@@ -104,12 +90,12 @@ export class MapsYandexService {
         zoom: options.zoom
       },
       {
-        searchControlProvider: 'yandex#search'
+        // searchControlProvider: 'yandex#search'
       }
     );
   }
 
-  createCluster(map, pointList: Array<MapMarker>) {
+  createCluster(map: Map, pointList: Array<MapMarker>): typeof map.geoObjects {
     const markerList = this.getObjectManagerData(pointList);
     const mapCluster = this.createObjectManager();
     mapCluster.objects.options.set('preset', 'islands#greenDotIcon');
