@@ -1,16 +1,18 @@
+/// <reference types="@types/googlemaps" />
+
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 import { fromEvent, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
-import '@types/googlemaps';
 import { MapInitConfiguration, MapMarker } from './maps-manager.service';
 
 const API_LANG = 'ru_RU';
 const API_KEY = 'AIzaSyAcuLH_XAAW8Ggg-9YN_Y_8QYcYp0Qa5fU';
 const API_URL = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&language=${API_LANG}`;
 const MARKER_CLUSTER_URL = 'https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js'
+
 
 @Injectable({
   providedIn: 'root'

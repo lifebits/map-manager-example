@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, forkJoin } from "rxjs";
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { MapsGoogleService } from './maps-google.service';
 import { MapsYandexService } from './maps-yandex.service';
@@ -20,7 +20,7 @@ export interface MapMarker {
 })
 export class MapsManagerService {
 
-  activeMapService: 'yandex' | 'google' = 'yandex';
+  activeMapService: 'yandex' | 'google' = 'google';
 
   constructor(
     private mapsGoogleService: MapsGoogleService,
